@@ -6,6 +6,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import jdbc.controller.HuespedController;
+import jdbc.controller.ReservaController;
+import jdbc.modelo.Huesped;
+import jdbc.modelo.Reserva;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -13,6 +19,8 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -211,12 +219,28 @@ public class Busqueda extends JFrame {
 		separator_1_2.setBackground(new Color(12, 138, 199));
 		separator_1_2.setBounds(539, 159, 193, 2);
 		contentPane.add(separator_1_2);
-		
 		JPanel btnbuscar = new JPanel();
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				JOptionPane.showMessageDialog(btnbuscar,"Presionando boton Buscar ");
+				int pestana = panel.getSelectedIndex();
+				if(pestana!=-1) {
+					String titlePestana =panel.getTitleAt(pestana);
+					if(titlePestana.equals("Huéspedes")) {
+						HuespedController huespedController = new HuespedController();
+						List<Huesped>listaHuesped =huespedController.listar();
+						llenarTableHuesped(listaHuesped);
+					}
+					else if(titlePestana.equals("Reservas")){
+						ReservaController reservaController = new ReservaController();
+						List<Reserva> listaReserva = reservaController.listar();
+						llenarTableReserva(listaReserva);
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(btnbuscar, "Ninguna Pestaña seleccionado");
+				}
 			}
 		});
 		btnbuscar.setLayout(null);
@@ -261,16 +285,40 @@ public class Busqueda extends JFrame {
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
 	}
-	
-//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
-	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
-	        xMouse = evt.getX();
-	        yMouse = evt.getY();
-	    }
 
-	    private void headerMouseDragged(java.awt.event.MouseEvent evt) {
-	        int x = evt.getXOnScreen();
-	        int y = evt.getYOnScreen();
-	        this.setLocation(x - xMouse, y - yMouse);
-}
+//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
+	private void headerMousePressed(java.awt.event.MouseEvent evt) {
+		xMouse = evt.getX();
+		yMouse = evt.getY();
+	}
+
+	private void headerMouseDragged(java.awt.event.MouseEvent evt) {
+		int x = evt.getXOnScreen();
+		int y = evt.getYOnScreen();
+		this.setLocation(x - xMouse, y - yMouse);
+	}
+	private void llenarTableHuesped(List<Huesped> lista) {
+		lista.forEach(elemento ->{
+			modeloHuesped.addRow(new Object[] {
+					elemento.getId(),
+					elemento.getNombre(),
+					elemento.getApellido(),
+					elemento.getFechaNacimiento(),
+					elemento.getNacionalidad(),
+					elemento.getTelefono(),
+					elemento.getIdReserva().getId()
+			});
+		});
+	}
+	private void llenarTableReserva(List<Reserva> lista) {
+		lista.forEach(elemento -> {
+			modelo.addRow(new Object[] {
+					elemento.getId(),
+					elemento.getFechaEntrada(),
+					elemento.getFechaSalida(),
+					elemento.getValor(),
+					elemento.getFormaPago()
+			});
+		});
+	}
 }

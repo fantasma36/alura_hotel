@@ -22,7 +22,7 @@ public class Huesped {
 		this.fechaNacimiento = fechaNacimiento;
 		this.nacionalidad = nacionalidad;
 		this.telefono = telefono;
-		//this.idReserva = idReserva;
+		this.idReserva = idReserva;
 	}
 
 	public Integer getId() {

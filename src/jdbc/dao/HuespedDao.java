@@ -25,8 +25,8 @@ public class HuespedDao {
 
 	public List<Huesped> listar() {
 		List<Huesped> listaHuesped = new ArrayList<Huesped>();
-		String querry = "SELECT H.*,R.* FROM HUESPEDES AS H"
-				+ "INNER JOIN RESERVA R ON R.id=H.idReserva";
+		String querry = "SELECT H.*,R.* FROM HUESPEDES AS H "
+				+ "INNER JOIN RESERVAS R ON R.id=H.idReserva";
 		try {
 			final PreparedStatement statement = connection.prepareStatement(querry);
 			try (statement) {
@@ -36,11 +36,11 @@ public class HuespedDao {
 						Integer id = resultSet.getInt(1);
 						String nombre = resultSet.getString(2);
 						String apellido = resultSet.getString(3);
-						LocalDate fechaNacimiento = (resultSet.getDate(4)).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+						LocalDate fechaNacimiento = (resultSet.getDate(4)).toLocalDate();
 						String nacionalidad = resultSet.getString(5);
 						String telefono = resultSet.getString(6);
 						Reserva reserva = new Reserva();
-						reserva.setId(resultSet.getInt(7));
+						reserva.setId(1);
 						//reserva.setFechaEntrada(null);
 						Huesped huesped = new Huesped(
 						id,nombre,apellido,fechaNacimiento,nacionalidad,telefono,

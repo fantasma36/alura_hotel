@@ -74,4 +74,8 @@ public class ReservaDao {
 				
 		return reserva;
 	}
+	public List<Reserva> listarPorNombre() {
+		String query ="SELECT * FROM ";
+		return null;
+	}
 }

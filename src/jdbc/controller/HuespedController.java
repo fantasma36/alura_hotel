@@ -15,8 +15,10 @@ public class HuespedController {
 	public List<Huesped> listar(){
 		return huespedDao.listar();
 	}
+	public List<Huesped> listar(String nombre) {
+		return this.huespedDao.listarPorNombre(nombre);
+	}
 	public void addHuesped(Huesped huesped) {
 		huespedDao.add(huesped);
 	}
-
 }

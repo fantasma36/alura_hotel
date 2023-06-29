@@ -14,7 +14,11 @@ public class ReservaController {
 	public List<Reserva> listar(){
 		return this.reservaDao.lista();
 	}
+	public List<Reserva> listar(String nombre) {
+		return this.reservaDao.listarPorNombre();
+	}
 	public Reserva registrar(Reserva reserva) {
 		return this.reservaDao.addReserva(reserva);
 	}
+
 }

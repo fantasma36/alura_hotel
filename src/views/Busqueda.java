@@ -11,6 +11,7 @@ import jdbc.controller.HuespedController;
 import jdbc.controller.ReservaController;
 import jdbc.modelo.Huesped;
 import jdbc.modelo.Reserva;
+import util.FormatoFecha;
 
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -223,13 +224,13 @@ public class Busqueda extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(btnbuscar,"Presionando boton Buscar ");
+				modeloHuesped.setRowCount(0);
 				int pestana = panel.getSelectedIndex();
 				if(pestana!=-1) {
 					String titlePestana =panel.getTitleAt(pestana);
 					if(titlePestana.equals("Huéspedes")) {
 						HuespedController huespedController = new HuespedController();
-						List<Huesped>listaHuesped =huespedController.listar();
+						List<Huesped>listaHuesped =huespedController.listar(txtBuscar.getText());
 						llenarTableHuesped(listaHuesped);
 					}
 					else if(titlePestana.equals("Reservas")){
@@ -284,6 +285,14 @@ public class Busqueda extends JFrame {
 		lblEliminar.setBounds(0, 0, 122, 35);
 		btnEliminar.add(lblEliminar);
 		setResizable(false);
+
+		HuespedController huespedController = new HuespedController();
+		List<Huesped> listaHuesped = huespedController.listar();
+		llenarTableHuesped(listaHuesped);
+		ReservaController reservaController = new ReservaController();
+		List<Reserva> listaReserva = reservaController.listar();
+		llenarTableReserva(listaReserva);
+		
 	}
 
 //Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
@@ -314,8 +323,8 @@ public class Busqueda extends JFrame {
 		lista.forEach(elemento -> {
 			modelo.addRow(new Object[] {
 					elemento.getId(),
-					elemento.getFechaEntrada(),
-					elemento.getFechaSalida(),
+					FormatoFecha.fecha(elemento.getFechaEntrada()),
+					FormatoFecha.fecha(elemento.getFechaSalida()),
 					elemento.getValor(),
 					elemento.getFormaPago()
 			});
